@@ -23,7 +23,6 @@ import org.example.firebasedbsampleapp.adapter.MessageAdapter;
 import org.example.firebasedbsampleapp.entity.Message;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -63,13 +62,10 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 TextView text = (EditText) findViewById(R.id.edit_text);
                 if (!TextUtils.isEmpty(text.getText())) {
-                    DatabaseReference ref = mFdInstance.getReference(mElementName).child(
-                            String.valueOf(Calendar.getInstance().getTimeInMillis())
-                    );
                     final Message message = new Message();
                     message.setContent(text.getText().toString());
                     message.setuId(mUid);
-                    ref.setValue(message, new DatabaseReference.CompletionListener() {
+                    mFdInstance.getReference(mElementName).push().setValue(message, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError == null) {
